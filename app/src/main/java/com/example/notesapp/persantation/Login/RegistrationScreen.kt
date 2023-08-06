@@ -15,6 +15,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -83,6 +86,10 @@ fun RegistrationScreen(
                 onValueChange = {
                     viewModel.onSignUpUserNameChange(it)
                 },
+                leadingIcon = {
+                    Icon(imageVector = Icons.Default.AccountCircle , contentDescription = "user_icon")
+                }
+                ,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(0.dp, 8.dp)
@@ -105,6 +112,10 @@ fun RegistrationScreen(
                 onValueChange = {
                     viewModel.onSignUpPasswordChange(it)
                 },
+                leadingIcon = {
+                    Icon(imageVector = Icons.Default.Lock , contentDescription = "password_icon")
+                }
+                ,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(0.dp, 8.dp)
@@ -138,6 +149,9 @@ fun RegistrationScreen(
                 value = loginUitState.confirmPasswordSignup,
                 onValueChange = {
                     viewModel.onSignUpConfirmPasswordChange(it)
+                },
+                leadingIcon = {
+                    Icon(imageVector = Icons.Default.Lock , contentDescription = "password_icon")
                 },
                 modifier = Modifier
                     .fillMaxWidth()

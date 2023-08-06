@@ -41,15 +41,16 @@ class LogInViewModel(
         logInUiState = logInUiState.copy(confirmPasswordSignup = password)
     }
 
-    fun validateLoginForm() =
+    private fun validateLoginForm() =
         logInUiState.userName.isNotBlank() &&
                 logInUiState.password.isNotBlank()
 
-    fun validateSignUpForm() =
+    private fun validateSignUpForm() =
         logInUiState.userNameSignup.isNotBlank() &&
                 logInUiState.passwordSignup.isNotBlank() &&
                 logInUiState.confirmPasswordSignup.isNotBlank()
-
+    private fun validateFormForForgetPass() =
+        logInUiState.userName.isNotBlank()
 
     fun createUser(context: Context) = viewModelScope.launch {
         try {
@@ -104,9 +105,29 @@ class LogInViewModel(
         }
     }
 
-    fun signOut() {
-        repo.signOut()
+    fun forgotPassword(context:Context){
+        try {
+            if (!validateFormForForgetPass()) {
+                throw IllegalArgumentException("email can't be empty")
+            }
+            logInUiState = logInUiState.copy(isLoading = true)
+            logInUiState = logInUiState.copy(logInError = null)
+            repo.forgotPassword(logInUiState.userName) {
+                if (it) {
+                    Toast.makeText(context, "Email Sent", Toast.LENGTH_LONG).show()
 
+                } else {
+                    Toast.makeText(context, "Failed to send reset email", Toast.LENGTH_LONG).show()
+
+                }
+
+            }
+        } catch (e: Exception) {
+            logInUiState = logInUiState.copy(logInError = e.localizedMessage)
+            e.printStackTrace()
+        } finally {
+            logInUiState = logInUiState.copy(isLoading = false)
+        }
     }
 }
 

@@ -2,16 +2,16 @@ package com.example.notesapp.repository
 
 
 import android.content.Context
-import com.example.notesapp.R
-import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+
+
 class AuthRepository(
     val context:Context
 ) {
@@ -60,6 +60,19 @@ class AuthRepository(
     }
     fun signOut(){
         Firebase.auth.signOut()
+    }
+    fun forgotPassword(
+        email: String,
+        onComplete: (Boolean) -> Unit
+    ){
+        FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    onComplete.invoke(true)
+                }else{
+                    onComplete.invoke(false )
+                }
+            }
     }
 
 }

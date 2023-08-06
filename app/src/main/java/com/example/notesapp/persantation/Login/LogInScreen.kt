@@ -1,14 +1,9 @@
 package com.example.notesapp.persantation.Login
 
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,18 +12,21 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -41,19 +39,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.lifecycleScope
+import androidx.compose.ui.unit.sp
 import com.example.notesapp.R
 import com.example.notesapp.ui.theme.Background
 import com.example.notesapp.ui.theme.MyGreen
-import kotlinx.coroutines.launch
-import androidx.compose.material3.Text as Text
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -64,7 +59,7 @@ fun LogInScreen(
 
 ) {
     val context = LocalContext.current
-    var loginUiState = viewModel.logInUiState
+    val loginUiState = viewModel.logInUiState
     val isError = loginUiState.logInError != null
 
 
@@ -77,10 +72,18 @@ fun LogInScreen(
 
         GreetingSection()
         if (isError) {
-            Text(
-                text = loginUiState.logInError ?: "unknown error",
-                color = Color.Red
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+                ){
+
+                Text(
+                    text = loginUiState.logInError ?: "unknown error",
+                    color = Color.Red,
+                    fontSize = 16.sp
+                )
+            }
         }
         Column(
             Modifier
@@ -105,6 +108,9 @@ fun LogInScreen(
                     onValueChange = {
                         viewModel.onUserNameChange(it)
                     },
+                    leadingIcon = {
+                        Icon(imageVector = Icons.Default.AccountCircle , contentDescription = "user_icon")
+                    },
                     modifier = Modifier
                         .border(
                             BorderStroke(2.dp, MyGreen),
@@ -112,7 +118,10 @@ fun LogInScreen(
                         )
                         .fillMaxWidth(),
                     shape = RoundedCornerShape(20),
-
+                    colors = TextFieldDefaults.textFieldColors(
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                    ),
 
                     )
             }
@@ -133,6 +142,9 @@ fun LogInScreen(
                     value = loginUiState.password,
                     onValueChange = {
                         viewModel.onPasswordChange(it)
+                    },
+                    leadingIcon = {
+                                  Icon(imageVector = Icons.Default.Lock , contentDescription = "Password_icon")
                     },
                    singleLine= true ,
                     modifier = Modifier
@@ -167,7 +179,10 @@ fun LogInScreen(
                 modifier = Modifier
                     .align(Alignment.Start)
                     .fillMaxWidth()
-                    .padding(0.dp, 8.dp),
+                    .padding(0.dp, 8.dp)
+                    .clickable {
+                        viewModel.forgotPassword(context)
+                    },
                 color = Color.White,
 
                 )
