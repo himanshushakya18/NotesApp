@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -98,6 +99,7 @@ fun LogInScreen(
             ) {
 
                 TextField(
+                    singleLine= true ,
                     placeholder  = ({ Text(text = "Email") }),
                     value = loginUiState.userName,
                     onValueChange = {
@@ -132,6 +134,7 @@ fun LogInScreen(
                     onValueChange = {
                         viewModel.onPasswordChange(it)
                     },
+                   singleLine= true ,
                     modifier = Modifier
                         .border(
                             BorderStroke(2.dp, MyGreen),
@@ -196,6 +199,7 @@ fun LogInScreen(
                 )
             }
         }
+        Divider(color = Color.White, modifier = Modifier.padding(16.dp))
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -207,6 +211,7 @@ fun LogInScreen(
                 text = "Are you new ?",
                 color = Color.White
             )
+            Spacer(modifier = Modifier.width(5.dp))
             Text(
                 text = "Register here",
                 color = Color(0xFF72F269),

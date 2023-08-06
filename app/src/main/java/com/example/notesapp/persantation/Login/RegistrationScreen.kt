@@ -186,7 +186,7 @@ fun RegistrationScreen(
                 color = Color.White
             )
         }
-        Divider(Modifier.padding(16.dp))
+        Divider(Modifier.padding(16.dp),color = Color.White)
         Row(
             Modifier
                 .fillMaxWidth()
